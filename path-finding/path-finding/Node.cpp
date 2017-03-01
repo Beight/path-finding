@@ -1,7 +1,7 @@
 #include "Node.h"
 
 Node::Node(unsigned int index, Position pos, bool passable)
-	: m_index(index), m_pos(pos), m_passable(passable), m_isVisited(false), m_steps(0), m_fromIndex(0), m_estimatedDistance(0), m_addedToVisitList(false)
+	: m_index(index), m_pos(pos), m_passable(passable), m_isVisited(false), m_steps(0), m_fromIndex(0), m_estimatedDistance(0.0f), m_addedToVisitList(false)
 {
 
 }
@@ -56,13 +56,14 @@ unsigned int Node::GetFromIndex() const
 	return m_fromIndex;
 }
 
-void Node::SetEstimatedDistance(int estimatedDistance)
+void Node::SetEstimatedDistance(float estimatedDistance)
 {
 	m_estimatedDistance = estimatedDistance;
 }
 
-int Node::GetEstimatedDistance() const
+float Node::GetEstimatedDistance() const
 {
+
 	return m_estimatedDistance;
 }
 

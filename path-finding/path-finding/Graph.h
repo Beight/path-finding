@@ -1,12 +1,12 @@
 #pragma once
-#include <queue>
+#include <set>
 #include "Node.h"
 
 struct Compare
 {
-	bool operator() (const std::pair<unsigned int, unsigned int> & lhs, const std::pair<unsigned int, unsigned int> & rhs) const
+	bool operator() (const std::pair<float, unsigned int> & lhs, const std::pair<float, unsigned int> & rhs) const
 	{
-		return lhs.first > rhs.first;
+		return lhs.first < rhs.first;
 	}
 };
 
@@ -25,7 +25,7 @@ public:
 
 	Node GetNode(unsigned int nodeIndex);
 
-	void AddVisitList(Node& n, const unsigned int currentIndex, const int currentSteps, std::priority_queue<std::pair<unsigned int, unsigned int>, std::vector<std::pair<unsigned int, unsigned int>>, Compare> &nodesToVisit, const Position &start, const Position &target);
+	void AddVisitList(Node& n, const unsigned int currentIndex, const int currentSteps, std::set<std::pair<float, unsigned int>, Compare> &nodesToVisit, const Position &start, const Position &target);
 
 private:
 	std::vector<Node> m_nodes;
