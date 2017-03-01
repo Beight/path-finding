@@ -90,7 +90,7 @@ void Graph::AddVisitList(Node& n, const unsigned int currentIndex, const int cur
 			return;
 		}
 		//node already in visit list with lower distance
-		else if ((currentSteps + 1) > n.GetSteps())
+		else if ((currentSteps + 1) >= n.GetSteps())
 			return;
 
 		//This is a shorter path to this node than before.
