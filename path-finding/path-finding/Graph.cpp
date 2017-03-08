@@ -39,6 +39,7 @@ int Graph::FindShortestPath(const Position& start, const Position& target)
 		while (!nextNodeFound)
 		{
 			//duplicates are allowed in openlist but are removed if they have already been visited.
+			//This is comprimise since we can't erase entries from the priority queue when we find duplicates.
 			if (m_nodes.at(nodesToVisit.top().second).GetVisited())
 				nodesToVisit.pop();
 			else
