@@ -27,7 +27,7 @@ public:
 
 	Node GetNode(unsigned int nodeIndex);
 
-	void AddVisitList(Node& n, const unsigned int currentIndex, const int currentSteps, VisitList &nodesToVisit, const Position &start, const Position &target);
+	void AddVisitList(Node& n, const unsigned int currentIndex, const int currentSteps, VisitList &nodesToVisit, const Position &target);
 
 private:
 	std::vector<Node> m_nodes;

@@ -24,7 +24,6 @@ int FindPath(const int nStartX, const int nStartY, const int nTargetX, const int
 		}
 	}
 
-
 	int targetNodeIndex = graph.FindShortestPath(Position(nStartX, nStartY), Position(nTargetX, nTargetY));
 	if (targetNodeIndex == -1)
 		return -1;

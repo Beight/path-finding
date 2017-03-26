@@ -6,6 +6,8 @@
 Graph::Graph(unsigned int graphWidth, unsigned int graphHeight, unsigned int outBufferSize)
 	: m_graphWidth(graphWidth), m_graphHeight(graphHeight), m_pValue(0.001f)
 {
+	//pValue is used to avoid ties between nodes in ther estimated distance.
+	//We use 1/1000 as a standard value but if the max length of the path is longer we use that instead.
 	if (outBufferSize > 1000)
 		m_pValue = 1.0f / static_cast<float>(outBufferSize);
 
@@ -62,31 +64,32 @@ int Graph::FindShortestPath(const Position& start, const Position& target)
 
 		//Add above neighbour to visit list, if one exists
 		if (currentNode.GetPos().m_nX != 0)
-			AddVisitList(m_nodes.at(currentNode.GetIndex() - 1), currentNode.GetIndex(), currentNode.GetSteps(), nodesToVisit, start, target);
+			AddVisitList(m_nodes.at(currentNode.GetIndex() - 1), currentNode.GetIndex(), currentNode.GetSteps(), nodesToVisit, target);
 		//Add right neighbour to visit list, if one 
 		if (currentNode.GetPos().m_nY != (m_graphHeight - 1))
-			AddVisitList(m_nodes.at(currentNode.GetIndex() + m_graphWidth), currentNode.GetIndex(), currentNode.GetSteps(), nodesToVisit, start, target);
+			AddVisitList(m_nodes.at(currentNode.GetIndex() + m_graphWidth), currentNode.GetIndex(), currentNode.GetSteps(), nodesToVisit, target);
 		//Add under neighbour to visit list, if one exists
 		if (currentNode.GetPos().m_nX != (m_graphWidth - 1))
-			AddVisitList(m_nodes.at(currentNode.GetIndex() + 1), currentNode.GetIndex(), currentNode.GetSteps(), nodesToVisit, start, target);
+			AddVisitList(m_nodes.at(currentNode.GetIndex() + 1), currentNode.GetIndex(), currentNode.GetSteps(), nodesToVisit, target);
 		//Add left neighbour to visit list, if one exists
 		if (currentNode.GetPos().m_nY != 0)
-			AddVisitList(m_nodes.at(currentNode.GetIndex() - m_graphWidth), currentNode.GetIndex(), currentNode.GetSteps(), nodesToVisit, start, target);
+			AddVisitList(m_nodes.at(currentNode.GetIndex() - m_graphWidth), currentNode.GetIndex(), currentNode.GetSteps(), nodesToVisit, target);
 	}
 
 	return targetFound;
 }
 
-void Graph::AddVisitList(Node& n, const unsigned int currentIndex, const int currentSteps, VisitList &nodesToVisit, const Position &start, const Position &target)
+void Graph::AddVisitList(Node& n, const unsigned int currentIndex, const int currentSteps, VisitList &nodesToVisit, const Position &target)
 {
 	if (n.GetPassable() && !n.GetVisited())
 	{
-		float estimatedDistance = static_cast<float>(currentSteps + 1) + (n.GetPos().GetDistance(target) * (1.0f + m_pValue));
-
 		//Check if node has not been added to the visit list
 		if (!n.GetAddedToVisitList())
 		{
 			n.SetFromIndex(currentIndex);
+
+			float estimatedDistance = static_cast<float>(currentSteps + 1) + (n.GetPos().GetDistance(target) * (1.0f + m_pValue));
+
 			n.SetEstimatedDistance(estimatedDistance);
 			n.SetSteps(currentSteps + 1);
 			nodesToVisit.push(std::make_pair(estimatedDistance, n.GetIndex()));
@@ -100,6 +103,9 @@ void Graph::AddVisitList(Node& n, const unsigned int currentIndex, const int cur
 		//This is a shorter path to this node than before.
 		n.SetFromIndex(currentIndex);
 		n.SetSteps(currentSteps + 1);
+
+		float estimatedDistance = static_cast<float>(currentSteps + 1) + (n.GetPos().GetDistance(target) * (1.0f + m_pValue));
+
 		n.SetEstimatedDistance(estimatedDistance);
 		nodesToVisit.push(std::make_pair(estimatedDistance, n.GetIndex()));
 	}
