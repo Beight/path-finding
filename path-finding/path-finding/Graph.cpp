@@ -3,9 +3,12 @@
 #include <deque>
 
 
-Graph::Graph(unsigned int graphWidth, unsigned int graphHeight)
-	: m_graphWidth(graphWidth), m_graphHeight(graphHeight)
+Graph::Graph(unsigned int graphWidth, unsigned int graphHeight, unsigned int outBufferSize)
+	: m_graphWidth(graphWidth), m_graphHeight(graphHeight), m_pValue(0.001f)
 {
+	if (outBufferSize > 1000)
+		m_pValue = 1.0f / static_cast<float>(outBufferSize);
+
 	m_nodes.reserve(m_graphWidth * m_graphHeight);
 }
 
@@ -21,13 +24,13 @@ void Graph::AddNode(Node node)
 
 int Graph::FindShortestPath(const Position& start, const Position& target)
 {
-	std::priority_queue<std::pair<unsigned int, unsigned int>, std::vector<std::pair<unsigned int, unsigned int>>, Compare> nodesToVisit;
+	VisitList nodesToVisit;
 	for (unsigned int i = 0; i < m_nodes.size(); i++)
 	{
 		if (m_nodes.at(i).GetPos() == start)
 		{
 			m_nodes.at(i).SetAddedToVisitList(true);
-			nodesToVisit.push(std::make_pair(0, m_nodes.at(i).GetIndex()));
+			nodesToVisit.push(std::make_pair(0.0f, m_nodes.at(i).GetIndex()));
 			break;
 		}
 	}
@@ -74,11 +77,11 @@ int Graph::FindShortestPath(const Position& start, const Position& target)
 	return targetFound;
 }
 
-void Graph::AddVisitList(Node& n, const unsigned int currentIndex, const int currentSteps, std::priority_queue<std::pair<unsigned int, unsigned int>, std::vector<std::pair<unsigned int, unsigned int>>, Compare> &nodesToVisit, const Position &start, const Position &target)
+void Graph::AddVisitList(Node& n, const unsigned int currentIndex, const int currentSteps, VisitList &nodesToVisit, const Position &start, const Position &target)
 {
 	if (n.GetPassable() && !n.GetVisited())
 	{
-		int estimatedDistance = (currentSteps + 1)  + n.GetPos().GetDistance(target);
+		float estimatedDistance = static_cast<float>(currentSteps + 1) + (n.GetPos().GetDistance(target) * (1.0f + m_pValue));
 
 		//Check if node has not been added to the visit list
 		if (!n.GetAddedToVisitList())

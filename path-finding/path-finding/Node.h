@@ -19,9 +19,9 @@ struct Position
 
 	}
 
-	int GetDistance(const Position &rhs) const
+	float GetDistance(const Position &rhs) const
 	{
-		return std::abs(m_nX - rhs.m_nX) + std::abs(m_nY - rhs.m_nY);
+		return static_cast<float>(std::abs(m_nX - rhs.m_nX) + std::abs(m_nY - rhs.m_nY));
 	}
 };
 
@@ -50,9 +50,9 @@ public:
 
 	int GetSteps() const;
 
-	void SetEstimatedDistance(int estimatedDistance);
+	void SetEstimatedDistance(float estimatedDistance);
 
-	int GetEstimatedDistance() const;
+	float GetEstimatedDistance() const;
 
 	void SetFromIndex(unsigned int fromIndex);
 
@@ -69,6 +69,6 @@ private:
 	bool m_isVisited;
 	int m_steps;
 	unsigned int m_fromIndex;
-	int m_estimatedDistance;
+	float m_estimatedDistance;
 	bool m_addedToVisitList;
 };

@@ -56,12 +56,12 @@ unsigned int Node::GetFromIndex() const
 	return m_fromIndex;
 }
 
-void Node::SetEstimatedDistance(int estimatedDistance)
+void Node::SetEstimatedDistance(float estimatedDistance)
 {
 	m_estimatedDistance = estimatedDistance;
 }
 
-int Node::GetEstimatedDistance() const
+float Node::GetEstimatedDistance() const
 {
 	return m_estimatedDistance;
 }

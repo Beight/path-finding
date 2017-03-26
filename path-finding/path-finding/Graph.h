@@ -4,7 +4,7 @@
 
 struct Compare
 {
-	bool operator() (const std::pair<unsigned int, unsigned int> & lhs, const std::pair<unsigned int, unsigned int> & rhs) const
+	bool operator() (const std::pair<float, unsigned int> & lhs, const std::pair<float, unsigned int> & rhs) const
 	{
 		return lhs.first > rhs.first;
 	}
@@ -14,7 +14,9 @@ class Graph
 {
 
 public:
-	Graph(unsigned int graphWidth, unsigned int graphHeight);
+	typedef std::priority_queue<std::pair<float, unsigned int>, std::vector<std::pair<float, unsigned int>>, Compare> VisitList;
+
+	Graph(unsigned int graphWidth, unsigned int graphHeight, unsigned int outBufferSize);
 	~Graph();
 
 	void AddNode(Node node);
@@ -25,10 +27,11 @@ public:
 
 	Node GetNode(unsigned int nodeIndex);
 
-	void AddVisitList(Node& n, const unsigned int currentIndex, const int currentSteps, std::priority_queue<std::pair<unsigned int, unsigned int>, std::vector<std::pair<unsigned int, unsigned int>>, Compare> &nodesToVisit, const Position &start, const Position &target);
+	void AddVisitList(Node& n, const unsigned int currentIndex, const int currentSteps, VisitList &nodesToVisit, const Position &start, const Position &target);
 
 private:
 	std::vector<Node> m_nodes;
 	unsigned int m_graphWidth;
 	unsigned int m_graphHeight;
+	float m_pValue;
 };

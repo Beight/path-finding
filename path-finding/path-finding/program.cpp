@@ -10,7 +10,7 @@ int FindPath(	const int nStartX, const int nStartY,
 int FindPath(const int nStartX, const int nStartY, const int nTargetX, const int nTargetY, const unsigned char *pMap, const int nMapWidth, const int nMapHeight, int * pOutBuffer, const int nOutBufferSize)
 {
 	unsigned int mapIterator = 0;
-	Graph graph = Graph(nMapWidth, nMapHeight);
+	Graph graph = Graph(nMapWidth, nMapHeight, nOutBufferSize);
 	for (int i = 0; i < nMapHeight; i++)
 	{
 		for (int j = 0; j < nMapWidth; j++)
