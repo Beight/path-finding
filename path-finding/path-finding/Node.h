@@ -1,5 +1,4 @@
 #pragma once
-#include <vector>
 #include <cstdlib>
 
 //Struct describing a position in the graph by x and y values.
