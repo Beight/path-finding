@@ -22,13 +22,13 @@ struct Position
 	//Get the the distance between this position and another.
 	//param rhs: Position to calculate distance to.
 	//Returns the distance between this position and the position provided. NOTE: Does not take impassable nodes into account.
-	float GetDistance(const Position &rhs) const
+	float GetDistance(const Position& rhs) const
 	{
 		return static_cast<float>(std::abs(m_nX - rhs.m_nX) + std::abs(m_nY - rhs.m_nY));
 	}
 };
 
-inline bool operator==(const Position &lhs, const Position &rhs) { return lhs.m_nX == rhs.m_nX && lhs.m_nY == rhs.m_nY;  }
+inline bool operator==(const Position& lhs, const Position& rhs) { return lhs.m_nX == rhs.m_nX && lhs.m_nY == rhs.m_nY;  }
 
 class Node
 {
